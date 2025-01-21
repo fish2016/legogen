@@ -1,0 +1,5 @@
+pkgname: example
+
+template:
+    - {templ: "gencode_tmpl/template_sql.go", out: "{{.StructNameLcase}}_sql_gen.go"}
+
