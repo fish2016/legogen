@@ -14,3 +14,14 @@ func CamelToSnake(str string) string {
 	}
 	return string(result)
 }
+
+func CamelToKebab(str string) string {
+	var result []rune
+	for i, r := range str {
+		if i > 0 && unicode.IsUpper(r) {
+			result = append(result, '-')
+		}
+		result = append(result, unicode.ToLower(r))
+	}
+	return string(result)
+}

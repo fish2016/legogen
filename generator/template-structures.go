@@ -18,7 +18,8 @@ type TemplateCommon struct {
 	InterfaceNameLcase  string
 	StructName          string
 	StructNameLcase     string //以小写开头的变量名，从StructName转化来
-	StructNameSnake     string
+	StructNameSnake     string // user_name (蛇形命名)
+	StructNameKebab     string // user-name (烤肉串命名)
 }
 
 type TemplateParam struct {
@@ -226,6 +227,7 @@ func CreateTemplateBase(genconfig config.GenConfig, basePackage, endpointPackage
 			StructName:      s.name,
 			StructNameLcase: privateVariableName(s.name),
 			StructNameSnake: utils.CamelToSnake(s.name),
+			StructNameKebab: utils.CamelToKebab(s.name),
 		},
 		Imports:            impSpecs,
 		ImportsWithoutTime: impSpecsWithoutTime,
