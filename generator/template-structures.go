@@ -2,6 +2,8 @@ package generator
 
 import (
 	"fmt"
+	"legogen/config"
+	"legogen/utils"
 	"strings"
 )
 
@@ -15,7 +17,8 @@ type TemplateCommon struct {
 	InterfaceName       string
 	InterfaceNameLcase  string
 	StructName          string
-	StructNameLcase     string
+	StructNameLcase     string //以小写开头的变量名，从StructName转化来
+	StructNameSnake     string
 }
 
 type TemplateParam struct {
@@ -157,6 +160,7 @@ func createTemplateMethods(basePackage, endpointPackage *Import, interf Interfac
 }
 
 type TemplateBase struct {
+	config.GenConfig
 	TemplateCommon
 	Imports            []string //
 	ImportsWithoutTime []string
@@ -165,7 +169,7 @@ type TemplateBase struct {
 	ExtraInterfaces    []TemplateParam
 }
 
-func CreateTemplateBase(basePackage, endpointPackage *Import, i Interface, s Struct, oimps []*Import) TemplateBase {
+func CreateTemplateBase(genconfig config.GenConfig, basePackage, endpointPackage *Import, i Interface, s Struct, oimps []*Import) TemplateBase {
 	// imps := filteredImports(i, oimps)
 	imps := oimps
 
@@ -209,6 +213,7 @@ func CreateTemplateBase(basePackage, endpointPackage *Import, i Interface, s Str
 	}
 
 	return TemplateBase{
+		GenConfig: genconfig,
 		TemplateCommon: TemplateCommon{
 			BasePackage:         basePackage.path,
 			BasePackageImport:   basePackage.ImportSpec(),
@@ -220,6 +225,7 @@ func CreateTemplateBase(basePackage, endpointPackage *Import, i Interface, s Str
 			//InterfaceNameLcase:  privateVariableName(i.name), fixme后续修改输入参数i可能是nil
 			StructName:      s.name,
 			StructNameLcase: privateVariableName(s.name),
+			StructNameSnake: utils.CamelToSnake(s.name),
 		},
 		Imports:            impSpecs,
 		ImportsWithoutTime: impSpecsWithoutTime,

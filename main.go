@@ -6,6 +6,7 @@ import (
 	"legogen/config"
 	"legogen/generator"
 	_ "legogen/logger"
+	"legogen/process"
 	"legogen/utils"
 	"os"
 	"strings"
@@ -15,6 +16,7 @@ import (
 
 var (
 	typeNames = flag.String("type", "", "comma-separated list of type names; must be set")
+	prjName   = flag.String("project", "", "prj name; must be set")
 	//middlewaresToGenerate = flag.String("middleware", "logging,instrumenting,transport,zipkin", "comma-seperated list of middlewares to process. Options: [logging,instrumenting,transport,zipkin]")
 
 	summarize                            = flag.String("summarize", "", "Prints out the Summary of Found structures intead of generating code")
@@ -22,11 +24,13 @@ var (
 	userDefineVal *generator.CmdMapValue = generator.NewCmdMapValue()
 
 	dirOfConf = flag.String("dirconf", "", "the dir of config")
+
+	noInputCode = flag.Bool("no-input-code", false, "prj name; option")
 )
 
 func Usage() {
 	fmt.Fprintf(os.Stderr, "Usage of %s:\n", os.Args[0])
-	fmt.Fprintf(os.Stderr, "\t%s [flags] -type T [directory]\n", "legocli")
+	fmt.Fprintf(os.Stderr, "\t%s [flags] -type T [directory] -project=[prj-name] --dirconf=[dirconf] \n", "legocli")
 }
 
 func main() {
@@ -37,6 +41,13 @@ func main() {
 
 	//检测命令行的 -type参数是否为空，空则不执行
 	if len(*typeNames) == 0 {
+		fmt.Println("-type must be set")
+		flag.Usage()
+		os.Exit(2)
+	}
+
+	if len(*prjName) == 0 {
+		fmt.Println("-project must be set")
 		flag.Usage()
 		os.Exit(2)
 	}
@@ -49,6 +60,19 @@ func main() {
 		args = []string{"."}
 	}
 
+	if *noInputCode == true {
+		config.LoadConfig(*dirOfConf)
+
+		if config.Config.PrjName == "" {
+			config.Config.PrjName = *prjName
+		}
+
+		for _, typeName := range types {
+			process.ProcessWithNoInputCode(typeName, *prjName)
+		}
+
+		return
+	}
 	var (
 		dir string
 		gen generator.Generator
@@ -65,6 +89,10 @@ func main() {
 	}
 
 	config.LoadConfig(*dirOfConf)
+
+	if config.Config.PrjName == "" {
+		config.Config.PrjName = *prjName
+	}
 
 	for _, typeName := range types {
 		middlewaresToGenerate := ""

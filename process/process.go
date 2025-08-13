@@ -41,7 +41,7 @@ func processDefault(g *generator.Generator, f *generator.File, mapValue *generat
 		}
 
 		for _, s := range f.Structs {
-			data := generator.CreateTemplateBase(basePackage, endpointPackage, generator.Interface{}, s, f.Imports)
+			data := generator.CreateTemplateBase(config.Config, basePackage, endpointPackage, generator.Interface{}, s, f.Imports)
 			err = tmpl.Execute(&buf, data)
 			if err != nil {
 				log.Fatalf("Template execution failed: %s\n", err)
@@ -59,6 +59,9 @@ func processDefault(g *generator.Generator, f *generator.File, mapValue *generat
 				defer file.Close()
 
 				fmt.Fprint(file, string(utils.FormatBuffer(buf, outFilename)))
+
+				outFilenameAbs, _ := filepath.Abs(outFilename)
+				log.Printf("generate file: %s, (%s%s)\n", outFilenameAbs, filepath.Dir(outFilename), filepath.Base(outFilename))
 			}()
 
 			// 清空buffer为下一个模板做准备

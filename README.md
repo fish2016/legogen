@@ -7,7 +7,7 @@ git clone xxx
 go mod tidy
 go build
 
-将生成执行文件legogen放置在path路径下
+将生成执行文件legogen放置在环境变量Path路径下
 
 
 
@@ -90,3 +90,9 @@ template:
 ``````
 
 # 生成方法
+``````
+cd ./examples/gen_example_model
+go generate .  //这里会触发调用example_model.go里面的指令 go:generate legogen -type=Example
+
+生成代码会在example_sql_gen.go
+``````

@@ -13,7 +13,10 @@ type GenTemplateConfig struct {
 }
 
 type GenConfig struct {
-	APPName string `default:"legogen"`
+	AppName string `default:"legogen"`
+
+	//用于import "{{.PrjName}}/internal/models"语句中，生成代码工程路径的root路径，表示import应用当前工程
+	PrjName string `yaml:"-"` //这里先不从配置文件读取，从命令行参数读取；暂时借用这个结构的字段，这个GenConfig结构会注入渲染
 
 	Template []GenTemplateConfig
 }
@@ -28,12 +31,15 @@ func LoadConfig(dir string) {
 	}
 
 	//fmt.Println("LoadConfig", dir)
-	path := pathlib.Join(dir, "gencode_tmpl", "gencode_config.yml")
-	err := configor.Load(&Config, path)
+	_path := pathlib.Join(dir, "gencode_config.yml")
+	err := configor.Load(&Config, _path)
 	if err != nil {
 		panic(err)
 	}
 
+	if Config.Template == nil {
+		panic("no template config")
+	}
 	//configJson, _ := json.MarshalIndent(&Config, "", "    ")
 	//fmt.Printf("load config: %s\n", configJson)
 
