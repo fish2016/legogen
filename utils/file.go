@@ -37,3 +37,10 @@ func OpenFile(dirname, filename string) *os.File {
 	}
 	return file
 }
+
+// ChecExist check if the file exists
+func CheckExist(src string) bool {
+	_, err := os.Stat(src)
+
+	return !os.IsNotExist(err)
+}

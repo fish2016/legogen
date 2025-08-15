@@ -7,16 +7,27 @@ import (
 	"path/filepath"
 )
 
+type GenMode string
+
+const (
+	GenMode_Default     GenMode = ""
+	GenMode_NoInputCode GenMode = "no-input-code"
+)
+
 type GenTemplateConfig struct {
-	Templ string `required:"true"`
-	Out   string `required:"true"`
+	Templ string  `required:"true"`
+	Out   string  `required:"true"`
+	Mode  GenMode `default:""`
 }
 
 type GenConfig struct {
 	AppName string `default:"legogen"`
 
 	//用于import "{{.PrjName}}/internal/models"语句中，生成代码工程路径的root路径，表示import应用当前工程
-	PrjName string `yaml:"-"` //这里先不从配置文件读取，从命令行参数读取；暂时借用这个结构的字段，这个GenConfig结构会注入渲染
+	PrjName string  `yaml:"-"` //这里先不从配置文件读取，从命令行参数读取；暂时借用这个结构的字段，这个GenConfig结构会注入渲染
+	Mode    GenMode `default:""`
+
+	In string ``
 
 	Template []GenTemplateConfig
 }
@@ -30,8 +41,14 @@ func LoadConfig(dir string) {
 		dir = pwd
 	}
 
+	var _path string
+	if utils.IsDirectory(dir) {
+		_path = pathlib.Join(dir, "gencode_config.yml")
+	} else {
+		_path = dir
+	}
 	//fmt.Println("LoadConfig", dir)
-	_path := pathlib.Join(dir, "gencode_config.yml")
+
 	err := configor.Load(&Config, _path)
 	if err != nil {
 		panic(err)
@@ -42,16 +59,24 @@ func LoadConfig(dir string) {
 	}
 	//configJson, _ := json.MarshalIndent(&Config, "", "    ")
 	//fmt.Printf("load config: %s\n", configJson)
-
+	var _dir string
+	if !utils.IsDirectory(dir) {
+		_dir = pathlib.Dir(dir)
+	}
 	for idx, _ := range Config.Template {
 		configtemplate := &Config.Template[idx]
-		configtemplate.Templ = pathlib.Join(dir, configtemplate.Templ)
+
+		//这里意图是，配置文件里面是相对配置文件目录的路径
+		configtemplate.Templ = pathlib.Join(_dir, configtemplate.Templ)
 		configtemplate.Templ = filepath.ToSlash(configtemplate.Templ)
 
-		configtemplate.Out = pathlib.Join(dir, configtemplate.Out)
+		configtemplate.Out = pathlib.Join(_dir, configtemplate.Out)
 		configtemplate.Out = filepath.ToSlash(configtemplate.Out)
 
 	}
+
+	Config.In = pathlib.Join(_dir, Config.In)
+	Config.In = filepath.ToSlash(Config.In)
 
 	return
 }
