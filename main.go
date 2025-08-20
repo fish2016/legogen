@@ -17,7 +17,7 @@ import (
 	_ "legogen/process"
 )
 
-const VERSION = "0.2"
+const VERSION = "0.22"
 
 var (
 	typeNames = flag.String("type", "", "comma-separated list of type names; must be set")
