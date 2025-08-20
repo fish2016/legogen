@@ -14,7 +14,7 @@ go build
 
 ## go install安装方式
 ``````
-go install github.com/fish2016/legogen@v0.22.0
+go install github.com/fish2016/legogen@v0.2.4
 
 ``````
 
