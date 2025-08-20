@@ -2,6 +2,7 @@
 LegoGen 是一个基于 Golang 的 AST 和 text/template 实现的代码生成器。它通过解析 Go 文件中的 struct 或 interface 类型定义，结合预设的代码模板，自动生成相应的代码。此生成器的核心特点是，只需使用 Go 文件中的类型信息，便可高效生成所需代码。
 
 # 快速开始
+## 源代码编译
 ``````
 git clone xxx
 go mod tidy
@@ -9,9 +10,14 @@ go build
 
 将生成执行文件legogen放置在环境变量Path路径下
 
+``````
 
+## go install安装方式
+``````
+go install github.com/fish2016/legogen@v0.22.0
 
 ``````
+
 ## 执行生成代码命令
 ``````
 方法1: 使用go generate .

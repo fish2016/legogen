@@ -1,4 +1,4 @@
-module legogen
+module github.com/fish2016/legogen
 
 go 1.23.4
 
