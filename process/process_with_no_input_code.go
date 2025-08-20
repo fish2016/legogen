@@ -3,8 +3,8 @@ package process
 import (
 	"bytes"
 	"fmt"
-	"legogen/config"
-	"legogen/utils"
+	"github.com/fish2016/legogen/config"
+	"github.com/fish2016/legogen/utils"
 	"log"
 	"path/filepath"
 	"text/template"

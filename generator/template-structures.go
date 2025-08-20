@@ -2,8 +2,8 @@ package generator
 
 import (
 	"fmt"
-	"legogen/config"
-	"legogen/utils"
+	"github.com/fish2016/legogen/config"
+	"github.com/fish2016/legogen/utils"
 	"strings"
 )
 

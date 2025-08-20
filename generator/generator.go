@@ -3,13 +3,13 @@ package generator
 import (
 	"bytes"
 	"fmt"
+	. "github.com/fish2016/legogen/logger"
+	"github.com/fish2016/legogen/utils"
 	"go/ast"
 	"go/build"
 	"go/format"
 	"go/parser"
 	"go/token"
-	. "legogen/logger"
-	"legogen/utils"
 	"log"
 
 	"strings"

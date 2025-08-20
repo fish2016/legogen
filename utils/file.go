@@ -2,8 +2,8 @@ package utils
 
 import (
 	"bytes"
+	"github.com/fish2016/legogen/logger"
 	"go/format"
-	"legogen/logger"
 	"log"
 	"os"
 	"path/filepath"

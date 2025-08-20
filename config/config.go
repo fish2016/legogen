@@ -1,8 +1,8 @@
 package config
 
 import (
+	"github.com/fish2016/legogen/utils"
 	"github.com/jinzhu/configor"
-	"legogen/utils"
 	pathlib "path"
 	"path/filepath"
 )

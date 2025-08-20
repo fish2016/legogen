@@ -3,9 +3,9 @@ package process
 import (
 	"bytes"
 	"fmt"
-	"legogen/config"
-	"legogen/generator"
-	"legogen/utils"
+	"github.com/fish2016/legogen/config"
+	"github.com/fish2016/legogen/generator"
+	"github.com/fish2016/legogen/utils"
 	"log"
 	"path"
 	"path/filepath"

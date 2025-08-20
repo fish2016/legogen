@@ -7,7 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
-	. "legogen/logger"
+	. "github.com/fish2016/legogen/logger"
 )
 
 func sliceContains(slice []string, entry string) bool {

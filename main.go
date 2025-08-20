@@ -4,17 +4,17 @@ import (
 	"bytes"
 	"flag"
 	"fmt"
-	"legogen/config"
-	"legogen/generator"
-	_ "legogen/logger"
-	"legogen/process"
-	"legogen/utils"
+	"github.com/fish2016/legogen/config"
+	"github.com/fish2016/legogen/generator"
+	_ "github.com/fish2016/legogen/logger"
+	"github.com/fish2016/legogen/process"
+	"github.com/fish2016/legogen/utils"
 	"log"
 	"os"
 	"strings"
 	"text/template"
 
-	_ "legogen/process"
+	_ "github.com/fish2016/legogen/process"
 )
 
 const VERSION = "0.22"

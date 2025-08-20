@@ -1,8 +1,8 @@
 package generator
 
 import (
+	. "github.com/fish2016/legogen/logger"
 	"go/ast"
-	. "legogen/logger"
 	"log"
 )
 
