@@ -1,6 +1,8 @@
 package utils
 
 import (
+	"errors"
+	"fmt"
 	"log"
 	"os"
 	"path/filepath"
@@ -9,7 +11,14 @@ import (
 func IsDirectory(name string) bool {
 	info, err := os.Stat(name)
 	if err != nil {
-		log.Fatal(err)
+		if os.IsNotExist(err) {
+			wd, _ := os.Getwd()
+			log.Printf("pwd: %s", wd)
+			log.Fatal(errors.Join(fmt.Errorf("NOT_FOUND"), err))
+		} else {
+			log.Fatal(err)
+		}
+
 	}
 	return info.IsDir()
 }

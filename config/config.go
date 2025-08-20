@@ -61,7 +61,9 @@ func LoadConfig(dir string) {
 	//fmt.Printf("load config: %s\n", configJson)
 	var _dir string
 	if !utils.IsDirectory(dir) {
-		_dir = pathlib.Dir(dir)
+		_dir = pathlib.Dir(dir) //取目录部分
+	} else {
+		_dir = dir
 	}
 	for idx, _ := range Config.Template {
 		configtemplate := &Config.Template[idx]

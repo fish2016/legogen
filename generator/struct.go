@@ -1,6 +1,7 @@
 package generator
 
 import (
+	"github.com/samber/lo"
 	"go/ast"
 )
 
@@ -84,4 +85,15 @@ func createStruct(name string, astStru *ast.StructType, file File) Struct {
 		stru.filedlist = append(stru.filedlist, *f)
 	}
 	return stru
+}
+
+func (t *Struct) FieldList() []Filed {
+	return t.filedlist
+}
+
+func (t *Struct) FieldNameList() []string {
+	return lo.Map(t.filedlist, func(field Filed, _ int) string {
+		return field.Name
+	})
+
 }

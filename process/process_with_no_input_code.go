@@ -10,6 +10,12 @@ import (
 	"text/template"
 )
 
+type TemplateTargetPath struct {
+	TargetType      string
+	TargetTypeSnake string
+	PrjName         string
+}
+
 // 处理无输入源代码的模板，这里意思是，不依赖基础go代码生成（不需要解析go代码）
 func ProcessWithNoInputCode(typ string, prjName string) {
 
@@ -35,12 +41,7 @@ func ProcessWithNoInputCode(typ string, prjName string) {
 			log.Fatalf("Template Parsing Error: %s", err)
 		}
 
-		type TemplateTemp struct {
-			TargetType      string
-			TargetTypeSnake string
-			PrjName         string
-		}
-		data := TemplateTemp{
+		data := TemplateTargetPath{
 			TargetType:      typ,
 			TargetTypeSnake: utils.CamelToSnake(typ),
 			PrjName:         prjName,

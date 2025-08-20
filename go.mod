@@ -10,6 +10,7 @@ require (
 	github.com/go-xorm/xorm v0.7.9
 	github.com/jinzhu/configor v1.2.2
 	github.com/mjiulee/lego v0.0.0-20210502080859-5e7855934720
+	github.com/samber/lo v1.51.0
 	golang.org/x/net v0.43.0
 	gorm.io/gen v0.3.27
 	gorm.io/gorm v1.30.1

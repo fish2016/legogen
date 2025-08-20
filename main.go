@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"flag"
 	"fmt"
 	"legogen/config"
@@ -8,9 +9,10 @@ import (
 	_ "legogen/logger"
 	"legogen/process"
 	"legogen/utils"
+	"log"
 	"os"
-	pathlib "path"
 	"strings"
+	"text/template"
 
 	_ "legogen/process"
 )
@@ -59,7 +61,7 @@ func main() {
 	exist := scripLoader.LoadConfig("")
 	if exist {
 		if len(os.Args) < 3 {
-			fmt.Println("no command")
+			fmt.Println("command parameter not enough")
 			os.Exit(2)
 		}
 		cmd := os.Args[1]
@@ -134,7 +136,29 @@ func main() {
 	}
 
 	genCmdParam.Mode = config.Config.Mode
-	genCmdParam.InputPath = pathlib.Join(config.Config.In, fmt.Sprintf("%s.go", utils.CamelToSnake(genCmdParam.TypeName))) //fixme 这里暂时这样以第一个配置为全局input处理,目前不能没一行一个input，目前是全局一个input
+
+	{
+		//fixme 这里暂时这样以第一个配置为全局input处理,目前不能没一行一个input，目前是全局一个input
+		//genCmdParam.InputPath = pathlib.Join(config.Config.In, fmt.Sprintf("%s.go", utils.CamelToSnake(genCmdParam.TypeName)))
+		pathTmpl, err := template.New("path").Parse(config.Config.In)
+		if err != nil {
+			log.Fatalf("Path Template Parsing Error: %s", err)
+		}
+
+		var pathBuf bytes.Buffer
+
+		data := process.TemplateTargetPath{
+			TargetType:      genCmdParam.TypeName,
+			TargetTypeSnake: utils.CamelToSnake(genCmdParam.TypeName),
+			PrjName:         genCmdParam.PrjName,
+		}
+		err = pathTmpl.ExecuteTemplate(&pathBuf, "path", data)
+		if err != nil {
+			log.Fatalf("Path Template Parsing Error: %s", err)
+		}
+
+		genCmdParam.InputPath = pathBuf.String()
+	}
 	if genCmdParam.Mode == config.GenMode_NoInputCode {
 		process.ProcessWithNoInputCode(genCmdParam.TypeName, *prjName)
 	} else {
