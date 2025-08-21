@@ -65,7 +65,8 @@ func ProcessWithNoInputCode(typ string, prjName string) {
 			fmt.Fprint(file, string(utils.FormatBuffer(buf, outFilename)))
 
 			outFilenameAbs, _ := filepath.Abs(outFilename)
-			log.Printf("generate file: %s, (%s)\n", outFilenameAbs, filepath.Join(filepath.Dir(outFilename), filepath.Base(outFilename)))
+			
+			log.Printf("generate file: %s, (%s)\n", outFilenameAbs, outFilename)
 		}()
 
 		// 清空buffer为下一个模板做准备
